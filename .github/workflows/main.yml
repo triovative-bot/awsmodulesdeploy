@@ -32,8 +32,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: terraform plan -auto-approve \
+              -var "aws_region=${{ env.AWS_REGION }}" \
+              -var "aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" \
+              -var "aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
 
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-        run: terraform apply -auto-approve tfplan
+        run: terraform apply -auto-approve \
+              -var "aws_region=${{ env.AWS_REGION }}" \
+              -var "aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" \
+              -var "aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"

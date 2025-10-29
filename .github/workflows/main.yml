@@ -37,7 +37,8 @@ jobs:
             -out=tfplan.out \
             -var="aws_region=${{ env.AWS_REGION }}" \
             -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" \
-            -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}"
+            -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}" \
+            -var="admin_cidr=${{ env.ADMIN_CIDR }}"
 
       - name: Terraform Apply
         run: terraform apply -auto-approve tfplan.out

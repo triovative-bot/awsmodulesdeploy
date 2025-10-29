@@ -31,6 +31,10 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
+      - name: Get public IP of GitHub runner
+        id: ip
+        run: echo "ADMIN_CIDR=$(curl -s https://checkip.amazonaws.com)/32" >> $GITHUB_ENV
+
       - name: Terraform Plan
         run: |
           terraform plan \

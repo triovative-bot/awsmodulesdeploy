@@ -50,7 +50,7 @@ module "eks" {
 }
 
 module "eksfarget" {
-  source            = "./modules/eksfarget"
+  source            = "../../modules/eksfarget"
   name              = ${var.name}-eks
   vpc_id            = module.vpc.vpc_id
   subnet_ids        = module.vpc.private_subnet_ids

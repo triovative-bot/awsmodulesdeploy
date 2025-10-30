@@ -26,7 +26,7 @@ variable "vpc_id" {
 variable "environment" {
   description = "Environment tag (e.g. dev, prod)"
   type        = string
-  default     = "prod"
+  default     = "dev"
 }
 
 variable "fargate_namespace" {

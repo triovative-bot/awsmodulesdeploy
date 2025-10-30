@@ -42,18 +42,11 @@ module "ec2" {
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 }
 
-module "eks" {
-  source          = "../../modules/eks"
-  cluster_name    = "${var.name}-eks"
-  private_subnets = module.vpc.private_subnets
-  public_subnets  = module.vpc.public_subnets
-}
 
-module "eksfarget" {
-  source            = "../../modules/eksfarget"
+module "eksfargetnew" {
+  source            = "../../modules/eksfargetnew"
   name              = var.name
   vpc_id            = module.vpc.vpc_id
   subnet_ids        = module.vpc.private_subnet_ids
   fargate_namespace = "default"
 }
-

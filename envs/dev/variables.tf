@@ -8,20 +8,6 @@ variable "admin_cidr" { default = "0.0.0.0/0" }
 variable "ec2_ami" { default = "ami-0c94855ba95c71c99" }
 variable "ec2_instance_type" { default = "t3.micro" }
 variable "ssh_key_name" { default = "my-key" }
-variable "aws_region" {
-  description = "AWS region where resources will be deployed"
-  type        = string
-  default     = "ap-south-1"
-}
-
-variable "aws_access_key" {
-  description = "AWS access key for authentication"
-  type        = string
-  sensitive   = true
-}
-
-variable "aws_secret_key" {
-  description = "AWS secret key for authentication"
-  type        = string
-  sensitive   = true
-}
+variable "aws_region" { default = "ap-south-1" }
+variable "aws_access_key" { sensitive   = true }
+variable "aws_secret_key" { sensitive   = true }

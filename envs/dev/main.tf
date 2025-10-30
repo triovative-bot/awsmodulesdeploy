@@ -48,3 +48,12 @@ module "eks" {
   private_subnets = module.vpc.private_subnets
   public_subnets  = module.vpc.public_subnets
 }
+
+module "eksfarget" {
+  source            = "./modules/eksfarget"
+  name              = var.name
+  vpc_id            = module.vpc.vpc_id
+  subnet_ids        = module.vpc.private_subnet_ids
+  fargate_namespace = "default"
+}
+

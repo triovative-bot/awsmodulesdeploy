@@ -66,8 +66,8 @@ resource "aws_security_group" "eks_sg" {
   }
 }
 
-module "eksfargetnew" {
-  source = "../../modules/eksfarget"
+module "eksfargate" {
+  source = "../../modules/eksfargate"
 
   cluster_name       = var.name
   cluster_version    = "1.28"  # Changed from 1.33 (verify latest supported version)

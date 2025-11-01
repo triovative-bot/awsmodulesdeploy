@@ -1,39 +1,44 @@
-variable "cluster_name" {
-  description = "Name of the EKS cluster"
-  type        = string
+output "cluster_id" {
+  description = "EKS cluster ID"
+  value       = aws_eks_cluster.this.id
 }
 
-variable "cluster_version" {
-  description = "Kubernetes version for the EKS cluster"
-  type        = string
-  default     = "1.28"
+output "cluster_arn" {
+  description = "EKS cluster ARN"
+  value       = aws_eks_cluster.this.arn
 }
 
-variable "private_subnets" {
-  description = "List of private subnet IDs for the EKS cluster"
-  type        = list(string)
+output "cluster_name" {
+  description = "EKS cluster name"
+  value       = aws_eks_cluster.this.name
 }
 
-variable "public_subnets" {
-  description = "List of public subnet IDs (not used directly in EKS but available for reference)"
-  type        = list(string)
-  default     = []
+output "cluster_endpoint" {
+  description = "Endpoint for EKS control plane"
+  value       = aws_eks_cluster.this.endpoint
 }
 
-variable "fargate_namespaces" {
-  description = "List of namespaces to run on Fargate"
-  type        = list(string)
-  default     = ["default", "kube-system"]
+output "cluster_certificate_authority_data" {
+  description = "Base64 encoded certificate data required to communicate with the cluster"
+  value       = aws_eks_cluster.this.certificate_authority[0].data
 }
 
-variable "public_access_cidrs" {
-  description = "List of CIDR blocks that can access the EKS public API server endpoint"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
+output "cluster_security_group_id" {
+  description = "Security group ID attached to the EKS cluster"
+  value       = aws_eks_cluster.this.vpc_config[0].cluster_security_group_id
 }
 
-variable "tags" {
-  description = "Additional tags to apply to all resources"
-  type        = map(string)
-  default     = {}
+output "cluster_iam_role_arn" {
+  description = "IAM role ARN of the EKS cluster"
+  value       = aws_iam_role.cluster.arn
+}
+
+output "fargate_profile_arns" {
+  description = "ARNs of the Fargate profiles"
+  value       = { for k, v in aws_eks_fargate_profile.this : k => v.arn }
+}
+
+output "fargate_pod_execution_role_arn" {
+  description = "ARN of the Fargate pod execution role"
+  value       = aws_iam_role.fargate_pod_execution.arn
 }

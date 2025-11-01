@@ -55,6 +55,7 @@ module "eksfargate" {
     }
   }
 
+
   tags = {
     Environment = var.env
   }

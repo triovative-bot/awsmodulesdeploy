@@ -1,19 +1,33 @@
-variable "name" {
-  description = "Name prefix for Fargate EKS resources"
+
+######################################
+# variables.tf
+######################################
+
+variable "cluster_name" {
+  description = "EKS Cluster name"
+  type        = string
 }
 
-variable "kubernetes_version" {
-  description = "Kubernetes version for EKS cluster"
-  default     = "1.29"
+variable "cluster_version" {
+  description = "Kubernetes version for the EKS cluster"
+  type        = string
+  default     = "1.33"
 }
 
-variable "subnet_ids" {
-  description = "List of subnet IDs for the Fargate profile (can be public or private)"
+variable "private_subnets" {
+  description = "List of private subnet IDs"
   type        = list(string)
 }
 
-variable "tags" {
-  description = "Additional tags to apply to resources"
-  type        = map(string)
-  default     = {}
+variable "public_subnets" {
+  description = "List of public subnet IDs (optional for workloads needing public access)"
+  type        = list(string)
+  default     = []
 }
+
+variable "fargate_namespaces" {
+  description = "List of Kubernetes namespaces to run on Fargate (private subnets)"
+  type        = list(string)
+  default     = ["default", "kube-system"]
+}
+

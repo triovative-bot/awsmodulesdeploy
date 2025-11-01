@@ -44,5 +44,5 @@ jobs:
             -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}" \
             -var="admin_cidr=${{ env.ADMIN_CIDR }}"
 
-#      - name: Terraform Apply
-#        run: terraform apply -auto-approve tfplan.out
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan.out

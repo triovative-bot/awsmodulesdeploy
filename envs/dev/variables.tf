@@ -8,7 +8,6 @@ variable "admin_cidr" { default = "0.0.0.0/0" }
 variable "ec2_ami" { default = "ami-0c94855ba95c71c99" }
 variable "ec2_instance_type" { default = "t3.micro" }
 variable "ssh_key_name" { default = "my-key" }
-variable "aws_region" { default = "ap-south-1" }
 variable "aws_access_key" { sensitive   = true }
 variable "aws_secret_key" { sensitive   = true }
 # Add these to your existing variables.tf
@@ -19,14 +18,9 @@ variable "cluster_version" {
   default     = "1.28"
 }
 
-# Note: You have duplicate region variables - consider consolidating
-# Remove one of these:
-# variable "region" { default = "us-east-1" }
-# variable "aws_region" { default = "ap-south-1" }
-
 # Keep only one:
 variable "aws_region" {
   description = "AWS region"
   type        = string
-  default     = "ap-south-1"
+  default     = "us-east-1"
 }

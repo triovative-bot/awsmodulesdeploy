@@ -42,10 +42,42 @@ module "ec2" {
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 }
 
-module "eks" {
-  source          = "../../modules/eks"
-  cluster_name    = "${var.name}-eks"
-  private_subnets = module.vpc.private_subnets
-  public_subnets  = module.vpc.public_subnets
+# Security Group for EKS Cluster
+resource "aws_security_group" "eks_sg" {
+  name   = "eks-sg"
+  vpc_id = module.vpc.vpc_id
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "eks-sg"
+  }
 }
 
+module "eksfargetnew" {
+  source = "../../modules/eksfargetnew"
+
+  cluster_name       = var.name
+  cluster_version    = "1.28"  # Changed from 1.33 (verify latest supported version)
+  private_subnets    = module.vpc.private_subnet_ids
+  public_subnets     = module.vpc.public_subnet_ids
+  fargate_namespaces = ["default", "kube-system"]
+  
+  # Optional: Add tags if needed
+  tags = {
+    Environment = "production"
+    Terraform   = "true"
+  }
+}

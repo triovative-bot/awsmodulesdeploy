@@ -34,10 +34,11 @@ resource "aws_security_group" "ec2_sg" {
 }
 
 module "eksfargetnew" {
-  source            = "../../modules/eksfargetnew"
-  name              = var.name
-  vpc_id            = module.vpc.vpc_id
-  subnet_ids        = module.vpc.private_subnet_ids
-  fargate_namespace = "default"
-}
+  source = "../../modules/eksfargetnew"
 
+  cluster_name       = var.name
+  cluster_version    = "1.33"                          # or var.cluster_version
+  private_subnets    = module.vpc.private_subnet_ids
+  public_subnets     = module.vpc.public_subnet_ids
+  fargate_namespaces = ["default", "kube-system"]
+}

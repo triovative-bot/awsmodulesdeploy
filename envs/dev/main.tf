@@ -33,30 +33,19 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-module "eksfargate" {
-  source = "../../modules/eksfargate"
-
-  cluster_name           = var.name
-  cluster_role_arn       = aws_iam_role.eks_cluster_role.arn
-  pod_execution_role_arn = aws_iam_role.fargate_pod_role.arn
-  private_subnet_ids     = module.vpc.private_subnets
-
-  fargate_profiles = {
-    default = {
-      subnet_ids = module.vpc.private_subnets
-      selectors = [
-        {
-          namespace = "default"
-        },
-        {
-          namespace = "kube-system"
-        }
-      ]
-    }
-  }
-
-
-  tags = {
-    Environment = var.env
-  }
+module "ec2" {
+  source                 = "../../modules/ec2"
+  ami                    = var.ec2_ami
+  instance_type          = var.ec2_instance_type
+  subnet_id              = element(module.vpc.public_subnets, 0)
+  key_name               = var.ssh_key_name
+  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
 }
+
+module "eks" {
+  source          = "../../modules/eks"
+  cluster_name    = "${var.name}-eks"
+  private_subnets = module.vpc.private_subnets
+  public_subnets  = module.vpc.public_subnets
+}
+

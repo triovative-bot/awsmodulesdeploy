@@ -1,14 +1,14 @@
 name: Terraform Destroy
 
 on:
-  workflow_dispatch:   # Allows manual trigger
+  workflow_dispatch:   # Allows manual trigger from GitHub UI
 
 jobs:
   terraform:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: envs/dev   # same directory as deploy
+        working-directory: envs/dev   # same as deploy workflow
 
     steps:
       - name: Checkout repository
@@ -27,16 +27,18 @@ jobs:
           aws-region: us-east-1
 
       - name: Terraform Init
-        run: terraform init
+        run: terraform init -input=false
 
       - name: Get public IP of GitHub runner
         id: ip
         run: echo "ADMIN_CIDR=$(curl -s https://checkip.amazonaws.com)/32" >> $GITHUB_ENV
 
       - name: Terraform Destroy
+        env:
+          AWS_REGION: us-east-1
         run: |
           terraform destroy -auto-approve \
             -var="aws_region=${{ env.AWS_REGION }}" \
-            -var="aws_access_key=${{ env.AWS_ACCESS_KEY_ID }}" \
-            -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}" \
+            -var="aws_access_key=${{ secrets.AWS_ACCESS_KEY_ID }}" \
+            -var="aws_secret_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
             -var="admin_cidr=${{ env.ADMIN_CIDR }}"

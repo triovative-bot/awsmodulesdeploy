@@ -57,7 +57,7 @@ jobs:
       - name: Terraform Apply
         run: |
           if [ "${{ github.event.inputs.action }}" == "destroy" ]; then
-            terraform destroy -auto-approve
+            terraform destroy -auto-approve -lock=false
           else
             terraform apply -auto-approve tfplan.out
           fi

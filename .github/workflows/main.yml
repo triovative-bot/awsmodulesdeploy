@@ -1,6 +1,16 @@
 name: Terraform CI/CD
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose Terraform action: apply or destroy'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - apply
+          - destroy
 
 jobs:
   terraform:

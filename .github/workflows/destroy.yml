@@ -33,10 +33,9 @@ jobs:
         id: ip
         run: echo "ADMIN_CIDR=$(curl -s https://checkip.amazonaws.com)/32" >> $GITHUB_ENV
 
-      - name: Terraform Unlock (ignore errors)
-        run: |
-          terraform force-unlock -force $(terraform show -json | jq -r '.values.root_module.resources[0].values.id') || true
-
+      - name: Cleanup lock on failure
+        run: terraform force-unlock -force 1bb6f006-5edb-e713-8ba3-918949e23f5f || true
+          
       - name: Terraform Destroy
         env:
           AWS_REGION: us-east-1

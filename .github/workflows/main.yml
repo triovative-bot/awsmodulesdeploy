@@ -41,6 +41,9 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
+      - name: Terraform unlock
+        run: terraform -chdir=./envs/dev force-unlock -force 1bb6f006-5edb-e713-8ba3-918949e23f5f
+
       - name: Get public IP of GitHub runner
         id: ip
         run: echo "ADMIN_CIDR=$(curl -s https://checkip.amazonaws.com)/32" >> $GITHUB_ENV

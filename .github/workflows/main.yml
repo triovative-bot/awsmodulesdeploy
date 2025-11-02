@@ -41,9 +41,6 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-      - name: Terraform unlock
-        run: terraform -chdir=./envs/dev force-unlock -force 1bb6f006-5edb-e713-8ba3-918949e23f5f
-
       - name: Get public IP of GitHub runner
         id: ip
         run: echo "ADMIN_CIDR=$(curl -s https://checkip.amazonaws.com)/32" >> $GITHUB_ENV
@@ -61,10 +58,4 @@ jobs:
         run: terraform -chdir=./envs/dev force-unlock -force 1bb6f006-5edb-e713-8ba3-918949e23f5f
 
       - name: Terraform Apply
-        run: |
-          if [ "${{ github.event.inputs.action }}" == "destroy" ]; then
-            terraform destroy -auto-approve -lock=false
-          else
-            terraform apply -auto-approve tfplan.out
-          fi
-#        run: terraform apply -auto-approve tfplan.out
+        run: terraform apply -auto-approve tfplan.out

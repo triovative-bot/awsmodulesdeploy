@@ -54,6 +54,9 @@ jobs:
             -var="aws_secret_key=${{ env.AWS_SECRET_ACCESS_KEY }}" \
             -var="admin_cidr=${{ env.ADMIN_CIDR }}"
 
+       - name: Terraform unlock
+         run: terraform -chdir=./envs/dev force-unlock -force 1bb6f006-5edb-e713-8ba3-918949e23f5f
+
       - name: Terraform Apply
         run: |
           if [ "${{ github.event.inputs.action }}" == "destroy" ]; then

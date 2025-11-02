@@ -45,4 +45,10 @@ jobs:
             -var="admin_cidr=${{ env.ADMIN_CIDR }}"
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan.out
+        run: |
+          if [ "${{ github.event.inputs.action }}" == "destroy" ]; then
+            terraform -chdir=${{ env.TF_WORKING_DIR }} destroy -auto-approve
+          else
+            terraform -chdir=${{ env.TF_WORKING_DIR }} apply -auto-approve
+          fi
+#        run: terraform apply -auto-approve tfplan.out
